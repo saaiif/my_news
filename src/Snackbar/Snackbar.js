@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { snackbar } from '../../redux/common/commonActions';
 import MuiAlert from '@mui/material/Alert';
 import Slide from '@mui/material/Slide';
 import Stack from '@mui/material/Stack';
+import { snackbarAction } from '../Redux/common/commonActions';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -30,7 +30,7 @@ export default function SnackbarMessage() {
 			return;
 		}
 		dispatch(
-			snackbar({
+			snackbarAction({
 				open: false,
 				message: data.message,
 				status: data.status

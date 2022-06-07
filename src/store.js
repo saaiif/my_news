@@ -1,7 +1,7 @@
 import { compose } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 // import persistStore from 'redux-persist/es/persistStore';
-import appReducer from "./redux/appReducer";
+import appReducer from "./Redux/appReducer";
 import {
   persistStore,
   FLUSH,
