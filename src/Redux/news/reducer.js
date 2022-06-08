@@ -1,7 +1,8 @@
-import { NEWS_DETAILS } from "./actionTypes";
+import { NEWS_DETAILS, SEARCH_VALUE } from "./actionTypes";
 
 const initialState = {
   newsdetails: [],
+  searchValue: null
 };
 
 export const newsReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ export const newsReducer = (state = initialState, action) => {
       return {
         ...state,
         newsdetails: action?.payload,
+      };
+    case SEARCH_VALUE:
+      return {
+        ...state,
+        searchValue: action?.payload,
       };
 
     default:

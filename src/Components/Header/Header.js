@@ -15,6 +15,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { useDispatch } from "react-redux";
+import { searchValue } from "../../Redux/news/actions";
+import { debounce } from "../../Utils/Debounce";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -29,6 +32,9 @@ const Search = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
+    "&:hover": {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
   },
 }));
 
@@ -59,6 +65,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const searchRef = React.useRef(null);
+  const [value, setValue] = React.useState("");
+  const dispatch = useDispatch();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -79,6 +88,14 @@ export default function Header() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleSearch = (e) => {
+    console.log(e.target.value,"df")
+    setValue(e.target.value);
+    dispatch(searchValue(e.target.value));
+  };
+
+  const optimizedSearch = React.useCallback(debounce(handleSearch,500),[])
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -119,6 +136,17 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <Search sx={{ background: "#eee", m: 1 }}>
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
+        <StyledInputBase
+          placeholder='Search…'
+          inputProps={{ "aria-label": "search" }}
+          // value={value}
+          onChange={(e)=>optimizedSearch(e)}
+        />
+      </Search>
       <MenuItem>
         <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
           <Badge badgeContent={4} color='error'>
@@ -156,29 +184,23 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar className='appbar' position='static'>
         <Toolbar>
-          {/* <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography variant='h6' noWrap component='div'>
-            MUI
+            Today's Headlines
           </Typography>
-          <Search>
+          <Search sx={{ display: { xs: "none", md: "flex" } }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              // value={value}
               placeholder='Search…'
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => optimizedSearch(e)}
             />
           </Search>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

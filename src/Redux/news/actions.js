@@ -1,7 +1,7 @@
 import Constants from "../../Constants";
 import { handleErrorMessage } from "../../Utils/ErrorMessage";
 import { signInPostService, getNewProfile, getNews } from "../services";
-import { NEWS_DETAILS } from "./actionTypes";
+import { NEWS_DETAILS, SEARCH_VALUE } from "./actionTypes";
 import { snackbarAction } from './../common/commonActions';
 
 export const getAllNews = (val, params) => {
@@ -35,5 +35,11 @@ export const newsDetails = (user) => {
   return {
     type: NEWS_DETAILS,
     payload: user,
+  };
+};
+export const searchValue = (val) => {
+  return {
+    type: SEARCH_VALUE,
+    payload: val,
   };
 };
